@@ -1,0 +1,13 @@
+.user-menu {
+    z-index: 50 !important;
+}
+
+.user-menu::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 15px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
