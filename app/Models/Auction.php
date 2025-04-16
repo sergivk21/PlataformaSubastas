@@ -21,7 +21,8 @@ class Auction extends Model
         'status',
         'winner_id',
         'paid_at',
-        'category_id'
+        'category_id',
+        'image'
     ];
 
     protected $casts = [
@@ -29,6 +30,14 @@ class Auction extends Model
         'end_date' => 'datetime',
         'paid_at' => 'datetime'
     ];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/auctions/' . $this->image);
+        }
+        return asset('images/default-auction.jpg');
+    }
 
     public function user(): BelongsTo
     {

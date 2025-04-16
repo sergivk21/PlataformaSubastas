@@ -36,23 +36,30 @@
                         @foreach($auctions as $auction)
                             <tr>
                                 <td>{{ $auction->title }}</td>
-                                <td>${{ number_format($auction->starting_price, 2) }}</td>
-                                <td>{{ $auction->user->name }}</td>
+                                <td>${{ number_format($auction->starting_price ?? 0, 2) }}</td>
+                                <td>{{ $auction->user ? $auction->user->name : 'Usuario eliminado' }}</td>
                                 <td>
-                                    <span class="badge bg-{{ $auction->status === 'active' ? 'success' : ($auction->status === 'finished' ? 'primary' : 'warning') }}">
+                                    <span class="badge bg-{{ 
+                                        match($auction->status) {
+                                            'active' => 'success',
+                                            'finished' => 'primary',
+                                            'cancelled' => 'danger',
+                                            default => 'warning'
+                                        } }}">
                                         {{ ucfirst($auction->status) }}
                                     </span>
                                 </td>
-                                <td>{{ $auction->ends_at->format('d/m/Y H:i') }}</td>
-                                <td>{{ $auction->bids_count }}</td>
+                                <td>{{ $auction->ends_at ? $auction->ends_at->format('d/m/Y H:i') : 'Sin fecha' }}</td>
+                                <td>{{ $auction->bids_count ?? 0 }}</td>
                                 <td>
                                     <a href="{{ route('admin.auctions.edit', $auction) }}" class="btn btn-sm btn-primary me-1">
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
-                                    @if($auction->status !== 'active')
+                                    @if($auction->status === 'pending')
                                         <form action="{{ route('admin.auctions.update', $auction) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
+                                            <input type="hidden" name="status" value="active">
                                             <button type="submit" class="btn btn-sm btn-success" 
                                                     onclick="return confirm('¿Estás seguro de que quieres activar esta subasta?')">
                                                 <i class="fas fa-play"></i> Activar

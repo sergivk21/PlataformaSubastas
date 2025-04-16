@@ -12,6 +12,12 @@ class BidController extends Controller
 {
     public function store(Request $request, Auction $auction)
     {
+        // Verificar si el usuario es administrador
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->back()
+                ->with('error', 'Los administradores no pueden realizar pujas.');
+        }
+
         $request->validate([
             'amount' => 'required|numeric|min:' . ($auction->current_price + 1),
         ], [

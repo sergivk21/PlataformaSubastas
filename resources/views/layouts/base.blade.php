@@ -18,14 +18,15 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="antialiased">
-    <div class="container mx-auto px-4 py-8">
-        @include('layouts.navigation')
-        
-        @yield('content')
-        
-        <footer class="text-center py-4 mt-12">
-            <div class="container mx-auto px-4">
-                <p class="text-gray-600">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Todos los derechos reservados.</p>
+    <div style="min-height: 100vh; display: flex; flex-direction: column;">
+        <div style="flex: 1 0 auto;">
+            @include('layouts.navigation')
+            
+            @yield('content')
+        </div>
+        <footer style="margin-top: auto; background-color: white; border-top: 1px solid #e5e7eb;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 0.5rem 1rem;">
+                <p style="text-align: center; color: #4b5563;">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>

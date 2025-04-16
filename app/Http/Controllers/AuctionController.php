@@ -42,32 +42,58 @@ class AuctionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'starting_price' => 'required|numeric|min:0',
-            'end_date' => 'required|date|after:now',
-        ]);
-
-        DB::beginTransaction();
         try {
+            // Validar los datos
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'starting_price' => 'required|numeric|min:0',
+                'end_date' => 'required|date|after:now',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Iniciar transacción
+            DB::beginTransaction();
+
+            // Crear la subasta
             $auction = new Auction([
-                'title' => $request->title,
-                'description' => $request->description,
-                'starting_price' => $request->starting_price,
-                'current_price' => $request->starting_price,
-                'end_date' => $request->end_date,
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'starting_price' => $validated['starting_price'],
+                'current_price' => $validated['starting_price'],
+                'end_date' => $validated['end_date'],
                 'status' => 'active',
                 'user_id' => Auth::id(),
             ]);
 
+            // Manejar la imagen si se subió
+            if ($request->hasFile('image')) {
+                // Guardar la imagen
+                $imagePath = $request->file('image')->store('auctions', 'public');
+                $auction->image = basename($imagePath);
+            }
+
+            // Guardar la subasta
             $auction->save();
 
+            // Confirmar transacción
             DB::commit();
-            return redirect()->route('auctions.index')->with('success', 'Subasta creada exitosamente');
+
+            // Redirigir con éxito
+            return redirect()->route('auctions.index')
+                ->with('success', 'Subasta creada exitosamente');
+
         } catch (\Exception $e) {
+            // Revertir transacción en caso de error
             DB::rollBack();
-            return redirect()->back()->with('error', 'Error al crear la subasta')->withInput();
+            
+            // Log del error
+            Log::error('Error al crear subasta: ' . $e->getMessage());
+            
+            // Redirigir con error
+            return redirect()->back()
+                ->with('error', 'Error al crear la subasta. Por favor, inténtalo de nuevo.')
+                ->withInput($request->except('image')); // No mantener la imagen en los datos
         }
     }
 
@@ -93,13 +119,22 @@ class AuctionController extends Controller
         $isSeller = auth()->check() && 
                     $auction->user_id === auth()->id();
 
+        // Obtener la puja más alta del usuario actual si existe
+        $userBid = null;
+        if (auth()->check()) {
+            $userBid = $auction->bids()
+                ->where('user_id', auth()->id())
+                ->orderBy('amount', 'desc')
+                ->first();
+        }
+
         // Verificar si el usuario ha pujado
-        $hasBid = auth()->check() && 
-                 $auction->bids()->where('user_id', auth()->id())->exists();
+        $hasBid = $userBid !== null;
 
         return view('auctions.show', [
             'auction' => $auction,
             'highestBid' => $highestBid,
+            'userBid' => $userBid,
             'isWinner' => $isWinner,
             'isSeller' => $isSeller,
             'hasBid' => $hasBid

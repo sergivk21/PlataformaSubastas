@@ -18,6 +18,7 @@ class RoleSeeder extends Seeder
         $adminRole = Role::create(['name' => 'admin']);
         $sellerRole = Role::create(['name' => 'seller']);
         $bidderRole = Role::create(['name' => 'bidder']);
+        $userRole = Role::create(['name' => 'user']);
 
         // Crear permisos
         Permission::create(['name' => 'manage users']);
@@ -29,6 +30,7 @@ class RoleSeeder extends Seeder
         $adminRole->givePermissionTo(['manage users', 'manage auctions']);
         $sellerRole->givePermissionTo(['create auctions']);
         $bidderRole->givePermissionTo(['place bids']);
+        $userRole->givePermissionTo([]); // El rol de usuario no tiene permisos por defecto
 
         // Crear usuario administrador si no existe
         $admin = User::where('email', 'admin@example.com')->first();

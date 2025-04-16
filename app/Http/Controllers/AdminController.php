@@ -145,10 +145,7 @@ class AdminController extends Controller
         }
 
         $auctions = \App\Models\Auction::with(['user', 'bids'])
-            ->where('status', 'active')
-            ->whereNotNull('end_date')
-            ->whereDate('end_date', '>', now())
-            ->orderBy('end_date', 'asc')
+            ->orderBy('end_date', 'desc')
             ->paginate(15);
 
         return view('admin.auctions.index', compact('auctions'));

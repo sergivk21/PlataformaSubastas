@@ -34,7 +34,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>
                                     @foreach($user->getRoleNames() as $role)
-                                        <span class="badge bg-primary">{{ $role }}</span>
+                                        <span class="badge bg-primary">{{ __('roles.roles.' . $role) }}</span>
                                     @endforeach
                                 </td>
                                 <td>{{ $user->last_activity ? $user->last_activity->diffForHumans() : 'Nunca' }}</td>
