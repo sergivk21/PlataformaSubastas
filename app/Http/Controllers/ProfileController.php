@@ -44,11 +44,18 @@ class ProfileController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
+        // Preparar los datos a actualizar
+        $updateData = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ];
+
+        // Solo actualizar la contraseña si se proporcionó una nueva
         if ($validated['password']) {
-            $validated['password'] = Hash::make($validated['password']);
+            $updateData['password'] = Hash::make($validated['password']);
         }
 
-        $user->update($validated);
+        $user->update($updateData);
 
         return redirect()->route('profile.show')->with('success', 'Perfil actualizado exitosamente');
     }

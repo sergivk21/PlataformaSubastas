@@ -48,7 +48,7 @@ class AdminController extends Controller
             'totalUsers' => User::count(),
             'activeAuctions' => $activeAuctions->count(),
             'totalBids' => Bid::count(),
-            'finishedAuctions' => \App\Models\Auction::where('status', 'finished')->count(),
+            'finishedAuctions' => \App\Models\Auction::finished()->count(),
             'latestAuctions' => \App\Models\Auction::latest()->take(5)->get(),
             'latestBids' => Bid::with(['user', 'auction'])->latest()->take(5)->get(),
         ]);

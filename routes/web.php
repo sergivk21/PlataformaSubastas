@@ -24,6 +24,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/auctions/{auction}', [AuctionController::class, 'destroy'])->name('auctions.destroy');
     Route::post('/auctions/delete-all', [AuctionController::class, 'deleteAll'])->name('auctions.delete-all');
     
+    // Rutas para móvil
+    Route::get('/mobile/auctions', [\App\Http\Controllers\Mobile\AuctionController::class, 'index'])->name('auctions.mobile.index');
+    Route::get('/mobile/auctions/{auction}', [\App\Http\Controllers\Mobile\AuctionController::class, 'show'])->name('auctions.mobile.show');
+    
     // Rutas de pujas
     Route::post('/auctions/{auction}/bid', [BidController::class, 'store'])->name('auctions.bid');
     
@@ -36,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
