@@ -3,7 +3,7 @@
 @section('title', 'Editar Usuario')
 
 @section('content')
-<div class="container">
+<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Editar Usuario</h1>
         <a href="{{ route('admin.users') }}" class="btn btn-secondary">

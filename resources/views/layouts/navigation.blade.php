@@ -28,10 +28,19 @@
             @auth
                 <div style="position: relative; display: inline-block; z-index: 1000;">
                     <button type="button" style="display: flex; align-items: center; background: none; border: none; cursor: pointer;" onclick="toggleUserMenu()">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; height: 2rem; width: 2rem; border-radius: 50%; background-color: #e0e7ff; color: #2563eb;">
-                            <span style="font-size: 1.25rem;">{{ Auth::user()->name[0] }}</span>
-                        </span>
-                        <span style="margin-left: 0.5rem; color: #1e293b;">{{ Auth::user()->name }}</span>
+                        @php
+                            $user = Auth::user();
+                            $profilePhoto = $user->profile_photo ? asset('storage/' . $user->profile_photo) : null;
+                            $photoExists = $user->profile_photo && file_exists(public_path('storage/' . $user->profile_photo));
+                        @endphp
+                        @if($photoExists)
+                            <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="Foto de perfil" style="height: 2rem; width: 2rem; border-radius: 50%; object-fit: cover; border: 2px solid #2563eb; background: #fff;" />
+                        @else
+                            <span style="display: inline-flex; align-items: center; justify-content: center; height: 2rem; width: 2rem; border-radius: 50%; background-color: #e0e7ff; color: #2563eb;">
+                                <span style="font-size: 1.25rem;">{{ $user->name[0] }}</span>
+                            </span>
+                        @endif
+                        <span style="margin-left: 0.5rem; color: #1e293b;">{{ $user->name }}</span>
                         <svg style="margin-left: 0.5rem; margin-right: -0.125rem; height: 1.25rem; width: 1.25rem; color: #94a3b8;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>

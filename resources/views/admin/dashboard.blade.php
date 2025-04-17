@@ -3,37 +3,17 @@
 @section('title', 'Panel de Administración')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 d-flex flex-column flex-shrink-0 p-3 bg-dark text-white border-end">
-            <hr class="border-light border-1 opacity-25">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="{{ route('auctions.index') }}" class="nav-link text-white active">
-                        <i class="fas fa-gavel me-2"></i>
-                        Subastas
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.users') }}" class="nav-link text-white">
-                        <i class="fas fa-users me-2"></i>
-                        Usuarios
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.reports') }}" class="nav-link text-white">
-                        <i class="fas fa-chart-bar me-2"></i>
-                        Reportes
-                    </a>
-                </li>
-            </ul>
-            <hr class="border-light border-1 opacity-25">
+<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div class="row justify-content-center">
+        <!-- Botón Usuarios centrado, igual que 'Ver Todas las subastas' -->
+        <div class="w-100 d-flex justify-content-center" style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
+            <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-users me-1"></i> Usuarios
+            </a>
+        </div>
 
-            </div>
-
-            <!-- Main content -->
-        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <!-- Main content centrado con margen -->
+        <div class="col-12">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2 text-primary fw-bold">Panel de Administración</h1>
 
@@ -166,9 +146,6 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-header bg-white d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0">Últimas Pujas</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-chart-line me-1"></i> Ver Gráfico
-                            </a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

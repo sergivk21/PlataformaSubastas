@@ -55,6 +55,33 @@ class AdminController extends Controller
     }
 
     /**
+     * Display the admin dashboard for mobile.
+     */
+    public function mobileDashboard(): View
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
+        $activeAuctions = \App\Models\Auction::where('status', 'active')
+            ->whereNotNull('end_date')
+            ->where('end_date', '>', now())
+            ->get();
+
+        // Calcular ingresos totales
+        $totalRevenue = \App\Models\Bid::sum('amount');
+
+        return view('admin.mobile.dashboard', [
+            'totalUsers' => User::count(),
+            'activeAuctions' => $activeAuctions->count(),
+            'totalBids' => Bid::count(),
+            'totalRevenue' => $totalRevenue,
+            'latestAuctions' => \App\Models\Auction::latest()->take(5)->get(),
+            'latestBids' => Bid::with(['user', 'auction'])->latest()->take(5)->get(),
+        ]);
+    }
+
+    /**
      * Display the user management page.
      */
     public function users(): View
@@ -101,38 +128,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.users')
             ->with('success', 'Usuario actualizado correctamente');
-    }
-
-    /**
-     * Display the reports page.
-     */
-    public function reports(): View
-    {
-        if (!auth()->user()->hasRole('admin')) {
-            abort(403);
-        }
-
-        // Reporte de ingresos
-        $revenue = DB::table('auctions')
-            ->join('bids', 'auctions.id', '=', 'bids.auction_id')
-            ->where('auctions.status', 'finished')
-            ->select(
-                DB::raw('DATE(auctions.created_at) as date'),
-                DB::raw('SUM(bids.amount) as total_revenue')
-            )
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->limit(30)
-            ->get();
-
-        // Reporte de subastas por estado
-        $auctionsByStatus = \App\Models\Auction::select('status', DB::raw('COUNT(*) as count'))
-            ->groupBy('status')
-            ->get()
-            ->pluck('count', 'status')
-            ->toArray();
-
-        return view('admin.reports.index', compact('revenue', 'auctionsByStatus'));
     }
 
     /**
@@ -184,5 +179,88 @@ class AdminController extends Controller
 
         return redirect()->route('admin.auctions')
             ->with('success', 'Subasta actualizada correctamente');
+    }
+
+    /**
+     * Vista móvil para gestionar subastas
+     */
+    public function mobileAuctions(): View
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $auctions = \App\Models\Auction::latest()->paginate(10);
+        return view('admin.mobile.auctions', compact('auctions'));
+    }
+
+    /**
+     * Vista móvil para gestionar usuarios
+     */
+    public function mobileUsers(): View
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $users = \App\Models\User::with('roles')->paginate(10);
+        return view('admin.mobile.users', compact('users'));
+    }
+
+    /**
+     * Display the reports page.
+     */
+    public function reports(): View
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
+        // Reporte de ingresos
+        $revenue = DB::table('auctions')
+            ->join('bids', 'auctions.id', '=', 'bids.auction_id')
+            ->where('auctions.status', 'finished')
+            ->select(
+                DB::raw('DATE(auctions.created_at) as date'),
+                DB::raw('SUM(bids.amount) as total_revenue')
+            )
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit(30)
+            ->get();
+
+        // Reporte de subastas por estado
+        $auctionsByStatus = \App\Models\Auction::select('status', DB::raw('COUNT(*) as count'))
+            ->groupBy('status')
+            ->get()
+            ->pluck('count', 'status')
+            ->toArray();
+
+        return view('admin.reports.index', compact('revenue', 'auctionsByStatus'));
+    }
+
+    /**
+     * Vista móvil para reportes
+     */
+    public function mobileReports(): View
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $revenue = \DB::table('auctions')
+            ->join('bids', 'auctions.id', '=', 'bids.auction_id')
+            ->where('auctions.status', 'finished')
+            ->select(
+                \DB::raw('DATE(auctions.created_at) as date'),
+                \DB::raw('SUM(bids.amount) as total_revenue')
+            )
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit(30)
+            ->get();
+        $auctionsByStatus = \App\Models\Auction::select('status', \DB::raw('COUNT(*) as count'))
+            ->groupBy('status')
+            ->get()
+            ->pluck('count', 'status')
+            ->toArray();
+        return view('admin.mobile.reports', compact('revenue', 'auctionsByStatus'));
     }
 }

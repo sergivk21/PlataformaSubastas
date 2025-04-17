@@ -44,6 +44,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
+    // Perfil móvil
+    Route::get('/mobile/profile', [\App\Http\Controllers\ProfileController::class, 'showMobile'])->name('profile.mobile.show');
+
     // Panel de administración
     Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -53,18 +56,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
         Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
         
-        // Reportes
-        Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
-        
         // Gestión de subastas
         Route::get('/auctions', [AdminController::class, 'auctions'])->name('admin.auctions');
         Route::get('/auctions/{auction}/edit', [AdminController::class, 'editAuction'])->name('admin.auctions.edit');
         Route::put('/auctions/{auction}', [AdminController::class, 'updateAuction'])->name('admin.auctions.update');
 
+        // Reportes
+        Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+        
         // Estado del worker
         Route::get('/worker/status', [WorkerStatusController::class, 'index'])->name('worker.status');
         Route::post('/worker/ping', [WorkerStatusController::class, 'ping'])->name('worker.ping');
     });
+
+    // Panel de administración móvil
+    Route::get('/mobile/admin/dashboard', [\App\Http\Controllers\AdminController::class, 'mobileDashboard'])->name('admin.mobile.dashboard');
+    // Panel de administración móvil: gestionar usuarios
+    Route::get('/mobile/admin/users', [\App\Http\Controllers\AdminController::class, 'mobileUsers'])->name('admin.mobile.users');
+    // Panel de administración móvil: gestionar subastas
+    Route::get('/mobile/admin/auctions', [\App\Http\Controllers\AdminController::class, 'mobileAuctions'])->name('admin.mobile.auctions');
+    // Panel de administración móvil: reportes
+    Route::get('/mobile/admin/reports', [\App\Http\Controllers\AdminController::class, 'mobileReports'])->name('admin.mobile.reports');
 });
 
 // Rutas públicas (deben ir después de las protegidas para evitar conflictos)

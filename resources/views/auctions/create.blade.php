@@ -3,7 +3,7 @@
 @section('title', 'Crear Nueva Subasta')
 
 @section('content')
-<div class="container-fluid" style="padding: 0;">
+<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0;">
     <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
         <div class="col-12 col-md-8 col-lg-6 d-flex justify-content-center">
             <div class="card shadow-lg border-0 rounded-3" style="max-width: 600px;">

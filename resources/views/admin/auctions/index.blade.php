@@ -3,7 +3,7 @@
 @section('title', 'Gestión de Subastas')
 
 @section('content')
-<div class="container">
+<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Gestión de Subastas</h1>
         <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">

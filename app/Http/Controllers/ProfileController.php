@@ -22,6 +22,16 @@ class ProfileController extends Controller
     }
 
     /**
+     * Display the user's profile form for mobile.
+     */
+    public function showMobile(Request $request)
+    {
+        return view('profile.mobile.show', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
      * Display the user's profile edit form.
      */
     public function edit(Request $request)
@@ -42,6 +52,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
         // Preparar los datos a actualizar
@@ -51,12 +62,30 @@ class ProfileController extends Controller
         ];
 
         // Solo actualizar la contraseña si se proporcionó una nueva
-        if ($validated['password']) {
+        if (!empty($validated['password'])) {
             $updateData['password'] = Hash::make($validated['password']);
         }
 
-        $user->update($updateData);
+        // Debug: ¿Llega el archivo?
+        $debugFile = $request->hasFile('profile_photo') ? 'sí' : 'no';
+        $debugFileName = $request->hasFile('profile_photo') ? $request->file('profile_photo')->getClientOriginalName() : '';
 
-        return redirect()->route('profile.show')->with('success', 'Perfil actualizado exitosamente');
+        // Procesar la foto de perfil si se subió
+        if ($request->hasFile('profile_photo')) {
+            // Eliminar la foto anterior si existe
+            if ($user->profile_photo && \Storage::disk('public')->exists($user->profile_photo)) {
+                \Storage::disk('public')->delete($user->profile_photo);
+            }
+            $path = $request->file('profile_photo')->store('profile_photos', 'public');
+            $updateData['profile_photo'] = $path;
+        }
+
+        $user->update($updateData);
+        $user->refresh(); // <-- Forzar recarga del usuario
+
+        return redirect()->route('profile.show')
+            ->with('success', 'Perfil actualizado exitosamente')
+            ->with('debug_file', $debugFile)
+            ->with('debug_file_name', $debugFileName);
     }
 }

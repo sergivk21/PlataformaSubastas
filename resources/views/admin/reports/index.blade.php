@@ -3,7 +3,7 @@
 @section('title', 'Reportes')
 
 @section('content')
-<div class="container">
+<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
     <h1 class="mb-4">Reportes</h1>
 
     <div class="row">
