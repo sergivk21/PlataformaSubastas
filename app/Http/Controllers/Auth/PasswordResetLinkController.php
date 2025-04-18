@@ -15,6 +15,9 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return view('auth.mobile.forgot-password');
+        }
         return view('auth.forgot-password');
     }
 
@@ -35,6 +38,10 @@ class PasswordResetLinkController extends Controller
         $status = Password::sendResetLink(
             $request->only('email')
         );
+
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return redirect()->route('auctions.mobile.index');
+        }
 
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))

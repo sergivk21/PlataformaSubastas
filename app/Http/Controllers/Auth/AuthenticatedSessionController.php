@@ -17,6 +17,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return view('auth.mobile.login');
+        }
         return view('auth.login');
     }
 
@@ -27,7 +30,18 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        // Actualizar la última actividad SOLO al iniciar sesión
+        $user = $request->user();
+        if ($user) {
+            $user->last_activity = now();
+            $user->save();
+        }
+
         $request->session()->regenerate();
+
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return redirect()->route('auctions.mobile.index');
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

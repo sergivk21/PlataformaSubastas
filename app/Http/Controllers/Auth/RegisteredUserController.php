@@ -22,6 +22,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return view('auth.mobile.register');
+        }
         return view('auth.register');
     }
 
@@ -51,6 +54,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
+            return redirect()->route('auctions.mobile.index');
+        }
         return redirect()->route('auctions.index');
     }
 }

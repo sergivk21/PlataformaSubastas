@@ -41,8 +41,15 @@ class BidController extends Controller
             $auction->save();
 
             DB::commit();
-            return redirect()->route('auctions.show', $auction)
-                ->with('success', 'Puja realizada exitosamente');
+
+            // Redirección según origen (móvil o escritorio)
+            if (request()->is('mobile/*') || str_contains(url()->previous(), '/mobile/')) {
+                return redirect()->route('auctions.mobile.show', $auction)
+                    ->with('success', 'Puja realizada exitosamente');
+            } else {
+                return redirect()->route('auctions.show', $auction)
+                    ->with('success', 'Puja realizada exitosamente');
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()

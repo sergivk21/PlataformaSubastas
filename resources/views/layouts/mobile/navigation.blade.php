@@ -12,7 +12,7 @@
                 <i class="fas fa-gavel" style="margin-right: 0.5rem;"></i> Subastas
             </a>
             @auth
-                <a href="{{ route('auctions.create') }}" style="background-color: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.2s ease; display: flex; align-items: center;">
+                <a href="{{ route('auctions.mobile.create') }}" style="background-color: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.2s ease; display: flex; align-items: center;">
                     <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Crear Subasta
                 </a>
                 <a href="{{ route('profile.mobile.show') }}" style="color: #1e293b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.5rem; display: flex; align-items: center;">

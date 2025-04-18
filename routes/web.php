@@ -12,6 +12,19 @@ Route::get('/', function () {
     return redirect()->route('auctions.index');
 })->name('home');
 
+// Redireccionar automáticamente a la versión móvil si el acceso es por ngrok
+Route::middleware(['web'])->group(function () {
+    Route::get('/login', function () {
+        if (
+            request()->getHost() && str_contains(request()->getHost(), 'ngrok')
+            || preg_match('/Mobile|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i', request()->header('User-Agent'))
+        ) {
+            return view('auth.mobile.login');
+        }
+        return view('auth.login');
+    })->name('login');
+});
+
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     // Rutas de subastas
@@ -26,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
     
     // Rutas para móvil
     Route::get('/mobile/auctions', [\App\Http\Controllers\Mobile\AuctionController::class, 'index'])->name('auctions.mobile.index');
+    Route::get('/mobile/auctions/create', [\App\Http\Controllers\Mobile\AuctionController::class, 'create'])->name('auctions.mobile.create');
+    Route::post('/mobile/auctions', [\App\Http\Controllers\Mobile\AuctionController::class, 'store'])->name('auctions.mobile.store');
     Route::get('/mobile/auctions/{auction}', [\App\Http\Controllers\Mobile\AuctionController::class, 'show'])->name('auctions.mobile.show');
     
     // Rutas de pujas
@@ -55,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
         Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+        Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
         
         // Gestión de subastas
         Route::get('/auctions', [AdminController::class, 'auctions'])->name('admin.auctions');
@@ -73,6 +89,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mobile/admin/dashboard', [\App\Http\Controllers\AdminController::class, 'mobileDashboard'])->name('admin.mobile.dashboard');
     // Panel de administración móvil: gestionar usuarios
     Route::get('/mobile/admin/users', [\App\Http\Controllers\AdminController::class, 'mobileUsers'])->name('admin.mobile.users');
+    // Vista móvil para editar usuario
+    Route::get('/mobile/admin/users/{user}/edit', [\App\Http\Controllers\AdminController::class, 'editMobileUser'])->name('admin.mobile.users.edit');
+    Route::put('/mobile/admin/users/{user}', [\App\Http\Controllers\AdminController::class, 'updateMobileUser'])->name('admin.mobile.users.update');
     // Panel de administración móvil: gestionar subastas
     Route::get('/mobile/admin/auctions', [\App\Http\Controllers\AdminController::class, 'mobileAuctions'])->name('admin.mobile.auctions');
     // Panel de administración móvil: reportes

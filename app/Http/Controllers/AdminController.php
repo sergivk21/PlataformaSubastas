@@ -131,6 +131,25 @@ class AdminController extends Controller
     }
 
     /**
+     * Delete a user (admin only)
+     */
+    public function deleteUser(Request $request, User $user)
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        if ($user->id === auth()->id()) {
+            return redirect()->back()->with('error', 'No puedes eliminar tu propio usuario.');
+        }
+        $user->delete();
+        // Redirección según origen explícito
+        if ($request->input('origin') === 'mobile') {
+            return redirect()->route('admin.mobile.users')->with('success', 'Usuario eliminado correctamente.');
+        }
+        return redirect()->route('admin.users')->with('success', 'Usuario eliminado correctamente.');
+    }
+
+    /**
      * Display the auction management page.
      */
     public function auctions(): View
@@ -203,6 +222,38 @@ class AdminController extends Controller
         }
         $users = \App\Models\User::with('roles')->paginate(10);
         return view('admin.mobile.users', compact('users'));
+    }
+
+    /**
+     * Editar usuario (formulario móvil)
+     */
+    public function editMobileUser(User $user)
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $roles = \Spatie\Permission\Models\Role::all();
+        return view('admin.mobile.edit-user', compact('user', 'roles'));
+    }
+
+    /**
+     * Actualizar usuario (móvil)
+     */
+    public function updateMobileUser(Request $request, User $user)
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'roles' => 'array',
+            'roles.*' => 'exists:roles,name'
+        ]);
+        $user->update($request->only(['name', 'email']));
+        $user->syncRoles($request->roles);
+        return redirect()->route('admin.mobile.users.edit', $user->id)
+            ->with('success', 'Usuario actualizado correctamente');
     }
 
     /**

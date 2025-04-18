@@ -13,8 +13,13 @@ class AuctionController extends Controller
     public function index()
     {
         // Obtener todas las subastas ordenadas por fecha de fin
+        $now = now();
         $auctions = Auction::with(['user', 'bids', 'category'])
             ->whereNotNull('end_date')
+            ->orderByRaw(
+                "CASE WHEN status = 'active' AND end_date > ? THEN 0 ELSE 1 END ASC",
+                [$now]
+            )
             ->orderBy('end_date', 'asc')
             ->paginate(12);
 
