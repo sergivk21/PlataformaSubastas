@@ -35,6 +35,11 @@ class AuctionController extends Controller
 
     public function store(Request $request)
     {
+        // Permitir crear subastas si tiene el rol seller o admin
+        if (!auth()->user()->hasAnyRole(['seller', 'admin'])) {
+            return redirect()->route('auctions.mobile.index')->with('error', 'No tienes permisos para crear subastas.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -57,6 +62,20 @@ class AuctionController extends Controller
 
         $auction->save();
 
-        return redirect()->route('mobile.auctions.index')->with('success', 'Subasta creada correctamente.');
+        return redirect()->route('auctions.mobile.index')->with('success', 'Subasta creada correctamente.');
+    }
+
+    public function destroy(Auction $auction)
+    {
+        // Solo el admin o el creador puede borrar
+        if (!auth()->user()->hasRole('admin') && $auction->user_id !== auth()->id()) {
+            abort(403);
+        }
+        // Borra la imagen si existe
+        if ($auction->image) {
+            \Storage::disk('public')->delete($auction->image);
+        }
+        $auction->delete();
+        return redirect()->route('auctions.mobile.index')->with('success', 'Subasta eliminada correctamente.');
     }
 }

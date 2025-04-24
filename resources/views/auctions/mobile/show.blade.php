@@ -139,8 +139,11 @@
     @if($auction->status === 'active')
         @if(auth()->user() && auth()->user()->hasRole('admin'))
             <div class="auction-mobile-section" style="background:#f1f5f9;border-radius:0.7em;padding:0.8em 0.5em;">
-                <i class="fas fa-info-circle text-gray-500 text-lg mb-1"></i>
                 <div class="text-gray-700 text-xs mt-1">Como administrador, no puedes realizar pujas en las subastas.<br><span style="color:#64748b;">Esta restricción se aplica para mantener la integridad del sistema.</span></div>
+            </div>
+        @elseif(auth()->user() && !auth()->user()->hasRole('bidder'))
+            <div class="auction-mobile-section" style="background:#fef2f2;border-radius:0.7em;padding:0.8em 0.5em;">
+                <div class="text-red-700 text-xs mt-1"><i class="fas fa-ban mr-2"></i>Solo los usuarios con rol <b>pujador</b> pueden realizar pujas.<br><span style="color:#b91c1c;">Cambia tu rol a pujador para poder participar en las subastas.</span></div>
             </div>
         @else
             <div class="auction-mobile-bid-form">
@@ -192,7 +195,7 @@
         <i class="fas fa-arrow-left mr-1"></i> Volver al listado
     </a>
     @if(auth()->user() && auth()->user()->hasRole('admin'))
-    <form action="{{ route('auctions.destroy', $auction) }}" method="POST" style="margin-top: 1rem;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta subasta? Esta acción no se puede deshacer.');">
+    <form action="{{ route('auctions.mobile.destroy', $auction) }}" method="POST" style="margin-top: 1rem;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta subasta? Esta acción no se puede deshacer.');">
         @csrf
         @method('DELETE')
         <button type="submit" style="display: flex; align-items: center; justify-content: center; width: 100%; background: linear-gradient(90deg, #dc2626 0%, #f43f5e 100%); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 14px 0 rgba(220,38,38,0.15); border: none; transition: all 0.2s; gap: 0.5rem;">

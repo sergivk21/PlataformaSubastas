@@ -34,7 +34,9 @@ class Auction extends Model
     public function getImageUrlAttribute()
     {
         if ($this->image) {
-            return asset('storage/auctions/' . $this->image);
+            // Si ya contiene 'auctions/', úsalo tal cual. Si no, prepéndelo.
+            $path = str_starts_with($this->image, 'auctions/') ? $this->image : 'auctions/' . $this->image;
+            return asset('storage/' . $path);
         }
         return asset('images/default-auction.jpg');
     }

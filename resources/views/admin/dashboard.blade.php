@@ -3,242 +3,365 @@
 @section('title', 'Panel de Administración')
 
 @section('content')
-<div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
-    <div class="row justify-content-center">
-        <!-- Botón Usuarios centrado, igual que 'Ver Todas las subastas' -->
-        <div class="w-100 d-flex justify-content-center" style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
-            <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-users me-1"></i> Usuarios
-            </a>
+<style>
+    .admin-mobile-bg {
+        min-height: 100vh;
+        background: #f1f5f9 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .admin-mobile-card {
+        max-width: 820px;
+        margin: 2.2rem auto 2.2rem auto;
+        background: #fff;
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 16px 0 rgba(31,38,135,0.12);
+        padding: 2.1rem 2.5rem 1.7rem 2.5rem;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .admin-mobile-title {
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #2563eb;
+        margin-bottom: 1.5rem;
+        letter-spacing: -1px;
+    }
+    .admin-mobile-avatar {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb 60%, #1e40af 100%);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.6rem;
+        font-weight: 800;
+        border: 3px solid #2563eb;
+        box-shadow: 0 2px 8px 0 rgba(37,99,235,0.13);
+        margin-bottom: 1.1rem;
+    }
+    .admin-mobile-section-title {
+        font-size: 1.08em;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 0.6em;
+        text-align: center;
+    }
+    .admin-mobile-stat {
+        background: #f1f5f9;
+        border-radius: 0.7em;
+        padding: 1.2em 0.8em;
+        margin-bottom: 1.2em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .admin-mobile-stat-label {
+        font-size: 1.08em;
+        color: #2563eb;
+        font-weight: 700;
+        margin-bottom: 0.1em;
+    }
+    .admin-mobile-stat-value {
+        font-size: 2.1em;
+        font-weight: 900;
+        color: #1e293b;
+    }
+    .admin-mobile-btn {
+        background: linear-gradient(90deg,#2563eb 0%,#1e40af 100%);
+        color: #fff;
+        font-weight: 700;
+        padding: 0.8em 2.2em;
+        font-size: 1.1em;
+        border-radius: 0.9em;
+        box-shadow: 0 2px 8px rgba(37,99,235,0.13);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7em;
+        text-decoration: none;
+        border: none;
+        margin-bottom: 1.4em;
+        transition: background 0.2s;
+        width: 100%;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .admin-mobile-btn:active, .admin-mobile-btn:hover {
+        background: linear-gradient(90deg,#1e40af 0%,#2563eb 100%);
+    }
+    .admin-mobile-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.4em;
+        background: none;
+    }
+    .admin-mobile-table th {
+        background: #f1f5f9;
+        color: #2563eb;
+        font-size: 1em;
+        font-weight: 700;
+        border: none;
+        padding: 0.7em 1em;
+        text-align: left;
+        border-radius: 0.7em 0.7em 0 0;
+    }
+    .admin-mobile-table td {
+        background: #fff;
+        font-size: 1em;
+        color: #1e293b;
+        border: none;
+        padding: 0.7em 1em;
+        border-radius: 0.7em;
+        vertical-align: middle;
+    }
+    .admin-mobile-badge {
+        display: inline-block;
+        padding: 0.32em 0.85em;
+        border-radius: 1.2em;
+        font-size: 0.98em;
+        font-weight: 700;
+        margin-right: 0.2em;
+    }
+    .bg-cyan-100 { background: #cffafe !important; }
+    .text-cyan-800 { color: #155e75 !important; }
+    .bg-green-100 { background: #bbf7d0 !important; }
+    .text-green-800 { color: #166534 !important; }
+    .bg-gray-100 { background: #f3f4f6 !important; }
+    .text-gray-800 { color: #1e293b !important; }
+    .admin-mobile-avatar-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+        margin-right: 0.3em;
+    }
+    @media (max-width: 900px) {
+        .admin-mobile-card { max-width: 98vw; padding: 1.2rem 0.5rem; }
+    }
+</style>
+<div class="admin-mobile-bg">
+    <div class="admin-mobile-card">
+        <div class="admin-mobile-avatar"><i class="fas fa-cogs"></i></div>
+        <div class="admin-mobile-title">Panel de Administración</div>
+        <a href="{{ route('admin.users') }}" class="admin-mobile-btn"><i class="fas fa-users"></i> Usuarios</a>
+        <div class="admin-mobile-section-title">Estadísticas</div>
+        <div class="admin-mobile-stat">
+            <span class="admin-mobile-stat-label">Usuarios Totales</span>
+            <span class="admin-mobile-stat-value">{{ $totalUsers }}</span>
         </div>
-
-        <!-- Main content centrado con margen -->
-        <div class="col-12">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2 text-primary fw-bold">Panel de Administración</h1>
-
+        <div class="admin-mobile-stat">
+            <span class="admin-mobile-stat-label">Subastas Activas</span>
+            <span class="admin-mobile-stat-value">{{ $activeAuctions }}</span>
+        </div>
+        <div class="admin-mobile-stat">
+            <span class="admin-mobile-stat-label">Total Pujas</span>
+            <span class="admin-mobile-stat-value">{{ $totalBids }}</span>
+        </div>
+        <div class="admin-mobile-stat">
+            <span class="admin-mobile-stat-label">Subastas Finalizadas</span>
+            <span class="admin-mobile-stat-value">{{ $finishedAuctions }}</span>
+        </div>
+        <div class="admin-mobile-section-title" style="margin-top:2em;">Últimas Subastas</div>
+        <div style="width:100%;margin-bottom:2em;">
+            <div class="table-responsive">
+                <table class="admin-mobile-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Precio Inicial</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($latestAuctions as $auction)
+                            <tr>
+                                <td>{{ $auction->title }}</td>
+                                <td><span class="admin-mobile-badge bg-cyan-100 text-cyan-800">${{ number_format($auction->starting_price, 2) }}</span></td>
+                                <td>
+                                    @if($auction->is_active)
+                                        <span class="admin-mobile-badge bg-green-100 text-green-800">Activa</span>
+                                    @else
+                                        <span class="admin-mobile-badge bg-gray-100 text-gray-800">Finalizada</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
-            <!-- Estadísticas -->
-            <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow-lg">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-circle bg-primary text-white me-3">
-                                    <i class="fas fa-users fs-4"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Usuarios Totales</h5>
-                            </div>
-                            <h2 class="display-6 mt-2">{{ $totalUsers }}</h2>
-                            <div class="progress mt-2" style="height: 5px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow-lg">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-circle bg-success text-white me-3">
-                                    <i class="fas fa-gavel fs-4"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Subastas Activas</h5>
-                            </div>
-                            <h2 class="display-6 mt-2">{{ $activeAuctions }}</h2>
-                            <div class="progress mt-2" style="height: 5px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow-lg">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-circle bg-info text-white me-3">
-                                    <i class="fas fa-money-bill-wave fs-4"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Total Pujas</h5>
-                            </div>
-                            <h2 class="display-6 mt-2">{{ $totalBids }}</h2>
-                            <div class="progress mt-2" style="height: 5px;">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow-lg">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-circle bg-warning text-white me-3">
-                                    <i class="fas fa-trophy fs-4"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Subastas Finalizadas</h5>
-                            </div>
-                            <h2 class="display-6 mt-2">{{ $finishedAuctions }}</h2>
-                            <div class="progress mt-2" style="height: 5px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Últimas Subastas -->
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <a href="{{ route('admin.auctions') }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-list me-1"></i> Ver Todas las subastas
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Precio Inicial</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($latestAuctions as $auction)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-shrink-0">
-                                                            <div class="icon-circle bg-primary text-white">
-                                                                <i class="fas fa-gavel"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-3">
-                                                            {{ $auction->title }}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-success">
-                                                        ${{ number_format($auction->starting_price, 2) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-{{ $auction->status === 'active' ? 'success' : ($auction->status === 'finished' ? 'primary' : 'warning') }}">
-                                                        {{ ucfirst($auction->status) }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Últimas Pujas -->
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Últimas Pujas</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Usuario</th>
-                                            <th>Subasta</th>
-                                            <th>Cantidad</th>
-                                            <th>Fecha</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($latestBids as $bid)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ $bid->user->profile_photo_url }}" 
-                                                                 class="rounded-circle me-2" 
-                                                                 style="width: 32px; height: 32px; object-fit: cover;">
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-3">
-                                                            {{ $bid->user->name }}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $bid->auction->title }}</td>
-                                                <td>
-                                                    <span class="badge bg-success">
-                                                        ${{ number_format($bid->amount, 2) }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ $bid->created_at->diffForHumans() }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="admin-mobile-section-title">Últimas Pujas</div>
+        <div style="width:100%;">
+            <div class="table-responsive">
+                <table class="admin-mobile-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Subasta</th>
+                            <th>Cantidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($latestBids as $bid)
+                            <tr>
+                                <td style="display:flex;align-items:center;gap:0.6em;">
+                                    @php
+                                        $photo = $bid->user->profile_photo_url;
+                                        if(empty($photo) && !empty($bid->user->profile_photo)) {
+                                            $photo = asset('storage/' . $bid->user->profile_photo);
+                                        }
+                                        $name = $bid->user->name;
+                                        $initial = strtoupper(mb_substr($name, 0, 1));
+                                    @endphp
+                                    @if($photo)
+                                        <img src="{{ $photo }}" class="admin-mobile-avatar-img" alt="avatar">
+                                    @else
+                                        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2563eb 60%,#1e40af 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;box-shadow:0 2px 8px 0 rgba(37,99,235,0.10);margin-right:0.3em;">{{ $initial }}</div>
+                                    @endif
+                                    {{ $name }}
+                                </td>
+                                <td>{{ $bid->auction->title }}</td>
+                                <td><span class="admin-mobile-badge bg-green-100 text-green-800">${{ number_format($bid->amount, 2) }}</span></td>
+                                <td>{{ $bid->created_at->diffForHumans() }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+@endsection
 
 @push('styles')
 <style>
-    .icon-circle {
-        width: 40px;
-        height: 40px;
+    .admin-bg { background: #f1f5f9; }
+    .admin-card-stat {
+        background: #fff;
+        border-radius: 1.1em;
+        box-shadow: 0 4px 16px 0 rgba(31,38,135,0.10);
+        padding: 2.1em 2em 1.7em 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 220px;
+        max-width: 260px;
+        flex: 1 1 220px;
+        margin-bottom: 0.7em;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .admin-card-stat:hover {
+        box-shadow: 0 8px 32px 0 rgba(37,99,235,0.17);
+        transform: translateY(-4px) scale(1.03);
+    }
+    .admin-card-icon {
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
-    }
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .nav-pills .nav-link {
-        color: rgba(255,255,255,0.9);
-        padding: 0.5rem 1rem;
-        border-radius: 0;
-    }
-    .nav-pills .nav-link:hover {
+        font-size: 2rem;
+        margin-bottom: 0.7em;
         color: #fff;
-        background-color: rgba(255,255,255,0.1);
     }
-    .nav-pills .nav-link.active {
-        color: #fff;
-        background-color: rgba(255,255,255,0.2);
+    .bg-blue-500 { background: linear-gradient(90deg,#2563eb 0%,#1e40af 100%) !important; }
+    .bg-green-500 { background: linear-gradient(90deg,#22c55e 0%,#16a34a 100%) !important; }
+    .bg-cyan-500 { background: linear-gradient(90deg,#06b6d4 0%,#0ea5e9 100%) !important; }
+    .bg-yellow-500 { background: linear-gradient(90deg,#facc15 0%,#eab308 100%) !important; }
+    .admin-card-label {
+        font-size: 1.08em;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 0.2em;
     }
-    .table td {
+    .admin-card-value {
+        font-size: 2.1em;
+        font-weight: 900;
+        color: #1e293b;
+    }
+    .admin-table-card {
+        background: #fff;
+        border-radius: 1.1em;
+        box-shadow: 0 4px 16px 0 rgba(31,38,135,0.10);
+        padding: 1.4em 1.2em 1.2em 1.2em;
+        min-width: 340px;
+        max-width: 520px;
+        flex: 1 1 340px;
+        margin-bottom: 2em;
+        display: flex;
+        flex-direction: column;
+    }
+    .admin-table-title {
+        font-size: 1.2em;
+        font-weight: 800;
+        color: #2563eb;
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+    }
+    .admin-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.4em;
+        background: none;
+    }
+    .admin-table th {
+        background: #f1f5f9;
+        color: #2563eb;
+        font-size: 1em;
+        font-weight: 700;
+        border: none;
+        padding: 0.7em 1em;
+        text-align: left;
+        border-radius: 0.7em 0.7em 0 0;
+    }
+    .admin-table td {
+        background: #fff;
+        font-size: 1em;
+        color: #1e293b;
+        border: none;
+        padding: 0.7em 1em;
+        border-radius: 0.7em;
         vertical-align: middle;
     }
-    .table thead th {
-        font-weight: 500;
-        color: #6c757d;
+    .admin-badge {
+        display: inline-block;
+        padding: 0.32em 0.85em;
+        border-radius: 1.2em;
+        font-size: 0.98em;
+        font-weight: 700;
+        margin-right: 0.2em;
     }
-    .table td {
-        font-size: 0.9rem;
+    .bg-cyan-100 { background: #cffafe !important; }
+    .text-cyan-800 { color: #155e75 !important; }
+    .bg-green-100 { background: #bbf7d0 !important; }
+    .text-green-800 { color: #166534 !important; }
+    .bg-gray-100 { background: #f3f4f6 !important; }
+    .text-gray-800 { color: #1e293b !important; }
+    .admin-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+        margin-right: 0.3em;
     }
-    .table td .badge {
-        padding: 0.35em 0.75em;
-    }
-    .hover-shadow-lg:hover {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+    @media (max-width: 900px) {
+        .admin-card-stat, .admin-table-card { min-width: 200px; max-width: 100%; padding: 1.2em 0.7em; }
+        .admin-table th, .admin-table td { font-size: 0.98em; padding: 0.6em 0.5em; }
     }
 </style>
 @endpush
@@ -254,4 +377,3 @@
     });
 </script>
 @endpush
-@endsection

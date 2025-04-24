@@ -3,85 +3,213 @@
 @section('title', 'Panel de Administración')
 
 @section('content')
-<div class="px-4 py-4">
-    <h1 class="text-2xl font-bold text-center text-primary mb-6">Panel de Administración</h1>
-
-    <!-- Estadísticas principales -->
-    <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            <div class="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center mb-2">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="text-xs text-gray-500">Usuarios</div>
-            <div class="text-lg font-bold">{{ $totalUsers }}</div>
+<style>
+    .admin-mobile-dashboard {
+        max-width: 430px;
+        margin: 1.5rem auto 1.5rem auto;
+        background: #fff;
+        border-radius: 1.1rem;
+        box-shadow: 0 2px 10px 0 rgba(31,38,135,0.13);
+        padding: 1.6rem 1.1rem 1.3rem 1.1rem;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .admin-mobile-dashboard-title {
+        text-align: center;
+        font-size: 1.22rem;
+        font-weight: 800;
+        color: #2563eb;
+        margin-bottom: 1.2rem;
+        letter-spacing: -0.5px;
+    }
+    .admin-mobile-dashboard-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.1em;
+        margin-bottom: 1.5em;
+    }
+    .admin-mobile-dashboard-stat {
+        background: #f1f5f9;
+        border-radius: 0.8em;
+        box-shadow: 0 1px 4px rgba(31,38,135,0.09);
+        padding: 1em 0.7em;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .admin-mobile-dashboard-stat-icon {
+        border-radius: 50%;
+        width: 2.4em;
+        height: 2.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5em;
+        font-size: 1.3em;
+        color: #fff;
+    }
+    .admin-mobile-dashboard-stat-users { background: #2563eb; }
+    .admin-mobile-dashboard-stat-auctions { background: #16a34a; }
+    .admin-mobile-dashboard-stat-revenue { background: #0891b2; }
+    .admin-mobile-dashboard-stat-bids { background: #f59e0b; }
+    .admin-mobile-dashboard-stat-label {
+        font-size: 0.92em;
+        color: #64748b;
+        margin-bottom: 0.1em;
+    }
+    .admin-mobile-dashboard-stat-value {
+        font-size: 1.13em;
+        font-weight: 700;
+        color: #1e293b;
+    }
+    .admin-mobile-dashboard-link {
+        display: block;
+        width: 100%;
+        padding: 0.8em 0;
+        background: #2563eb;
+        color: #fff;
+        border-radius: 0.7em;
+        text-align: center;
+        font-weight: 700;
+        text-decoration: none;
+        margin-bottom: 1.5em;
+        box-shadow: 0 1px 4px rgba(31,38,135,0.09);
+        transition: background 0.18s;
+    }
+    .admin-mobile-dashboard-link:active, .admin-mobile-dashboard-link:focus {
+        background: #1d4ed8;
+    }
+    .admin-mobile-dashboard-section-title {
+        font-size: 1.04em;
+        font-weight: 700;
+        color: #2563eb;
+        margin-bottom: 0.7em;
+        margin-top: 1.5em;
+    }
+    .admin-mobile-dashboard-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7em;
+    }
+    .admin-mobile-dashboard-list-item {
+        background: #fff;
+        border-radius: 0.7em;
+        box-shadow: 0 1px 4px rgba(31,38,135,0.08);
+        padding: 0.8em 0.9em;
+        display: flex;
+        flex-direction: column;
+        font-size: 0.97em;
+    }
+    .admin-mobile-dashboard-list-item-title {
+        font-weight: 600;
+        color: #2563eb;
+        margin-bottom: 0.1em;
+    }
+    .admin-mobile-dashboard-list-item-meta {
+        font-size: 0.93em;
+        color: #64748b;
+        margin-bottom: 0.1em;
+    }
+    .admin-mobile-dashboard-list-item-link {
+        color: #2563eb;
+        font-size: 0.92em;
+        text-decoration: underline;
+        margin-top: 0.2em;
+    }
+    .admin-mobile-dashboard-bid-user {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        font-weight: 600;
+        color: #0891b2;
+    }
+    .admin-mobile-dashboard-bid-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #e2e8f0;
+    }
+    .admin-mobile-dashboard-footer {
+        margin-top: 2em;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.93em;
+    }
+</style>
+<div class="admin-mobile-dashboard">
+    <div class="admin-mobile-dashboard-title">Panel de Administración</div>
+    <div class="admin-mobile-dashboard-stats">
+        <div class="admin-mobile-dashboard-stat">
+            <div class="admin-mobile-dashboard-stat-icon admin-mobile-dashboard-stat-users"><i class="fas fa-users"></i></div>
+            <div class="admin-mobile-dashboard-stat-label">Usuarios</div>
+            <div class="admin-mobile-dashboard-stat-value">{{ $totalUsers }}</div>
         </div>
-        <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            <div class="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center mb-2">
-                <i class="fas fa-gavel"></i>
-            </div>
-            <div class="text-xs text-gray-500">Subastas activas</div>
-            <div class="text-lg font-bold">{{ $activeAuctions }}</div>
+        <div class="admin-mobile-dashboard-stat">
+            <div class="admin-mobile-dashboard-stat-icon admin-mobile-dashboard-stat-auctions"><i class="fas fa-gavel"></i></div>
+            <div class="admin-mobile-dashboard-stat-label">Subastas activas</div>
+            <div class="admin-mobile-dashboard-stat-value">{{ $activeAuctions }}</div>
         </div>
-        <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            <div class="bg-cyan-500 text-white rounded-full w-10 h-10 flex items-center justify-center mb-2">
-                <i class="fas fa-money-bill-wave"></i>
-            </div>
-            <div class="text-xs text-gray-500">Ingresos</div>
-            <div class="text-lg font-bold">${{ number_format($totalRevenue, 2) }}</div>
+        <div class="admin-mobile-dashboard-stat">
+            <div class="admin-mobile-dashboard-stat-icon admin-mobile-dashboard-stat-revenue"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="admin-mobile-dashboard-stat-label">Ingresos</div>
+            <div class="admin-mobile-dashboard-stat-value">${{ number_format($totalRevenue, 2) }}</div>
         </div>
-        <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            <div class="bg-yellow-500 text-white rounded-full w-10 h-10 flex items-center justify-center mb-2">
-                <i class="fas fa-gavel"></i>
-            </div>
-            <div class="text-xs text-gray-500">Total pujas</div>
-            <div class="text-lg font-bold">{{ $totalBids }}</div>
+        <div class="admin-mobile-dashboard-stat">
+            <div class="admin-mobile-dashboard-stat-icon admin-mobile-dashboard-stat-bids"><i class="fas fa-gavel"></i></div>
+            <div class="admin-mobile-dashboard-stat-label">Total pujas</div>
+            <div class="admin-mobile-dashboard-stat-value">{{ $totalBids }}</div>
         </div>
     </div>
+    <a href="{{ route('admin.mobile.users') }}" class="admin-mobile-dashboard-link">
+        <i class="fas fa-users" style="margin-right:0.5em;"></i>Gestionar Usuarios
+    </a>
 
-    <!-- Accesos directos -->
-    <div class="flex flex-col gap-3 mb-6">
-        <a href="{{ route('admin.mobile.users') }}"
-           style="display: block; max-width: 320px; margin: 0 auto; padding: 0.75rem 1.5rem; background-color: #2563eb; color: white; border-radius: 0.5rem; text-decoration: none; text-align: center; font-weight: bold;">
-            <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
-            Gestionar Usuarios
-        </a>
+    <div class="admin-mobile-dashboard-section-title">Últimas subastas</div>
+    <div class="admin-mobile-dashboard-list">
+        @foreach($latestAuctions as $auction)
+            <div class="admin-mobile-dashboard-list-item">
+                <div class="admin-mobile-dashboard-list-item-title">{{ $auction->title }}</div>
+                <div class="admin-mobile-dashboard-list-item-meta">${{ number_format($auction->starting_price, 2) }} | {{ $auction->status }}</div>
+                <a href="{{ route('auctions.mobile.show', $auction->id) }}" class="admin-mobile-dashboard-list-item-link">Ver</a>
+            </div>
+        @endforeach
     </div>
 
-    <!-- Últimas subastas -->
-    <div class="mb-6">
-        <h2 class="text-lg font-semibold mb-2">Últimas subastas</h2>
-        <div class="flex flex-col gap-2">
-            @foreach($latestAuctions as $auction)
-                <div class="bg-white rounded-lg shadow p-3 flex flex-col">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="font-semibold">{{ $auction->title }}</span>
-                        <span class="text-xs text-gray-400">${{ number_format($auction->starting_price, 2) }}</span>
-                    </div>
-                    <div class="text-xs text-gray-500 mb-1">{{ $auction->status }}</div>
-                    <div class="flex items-center gap-2">
-                        <a href="{{ route('auctions.show', $auction->id) }}" class="text-blue-600 text-xs underline">Ver</a>
-                    </div>
+    <div class="admin-mobile-dashboard-section-title">Últimas pujas</div>
+    <div class="admin-mobile-dashboard-list">
+        @foreach($latestBids as $bid)
+            <div class="admin-mobile-dashboard-list-item">
+                <div class="admin-mobile-dashboard-bid-user">
+                    @php
+                        $hasCustomPhoto = false;
+                        $photoUrl = null;
+                        // 1. Foto personalizada subida en mobile (profile_photo en storage)
+                        if (!empty($bid->user->profile_photo) && file_exists(public_path('storage/' . $bid->user->profile_photo))) {
+                            $hasCustomPhoto = true;
+                            $photoUrl = asset('storage/' . $bid->user->profile_photo);
+                        }
+                        // 2. Foto Jetstream (profile_photo_path)
+                        elseif (!empty($bid->user->profile_photo_path)) {
+                            $hasCustomPhoto = true;
+                            $photoUrl = $bid->user->profile_photo_url;
+                        }
+                        $initial = strtoupper(mb_substr($bid->user->name, 0, 1));
+                    @endphp
+                    @if($hasCustomPhoto)
+                        <img src="{{ $photoUrl }}" class="admin-mobile-dashboard-bid-avatar" alt="{{ $bid->user->name }}">
+                    @else
+                        <span style="display:flex;justify-content:center;align-items:center;width:28px;height:28px;border-radius:50%;background:#e0e7ef;color:#2563eb;font-weight:700;font-size:1em;border:1px solid #e2e8f0;">{{ $initial }}</span>
+                    @endif
+                    {{ $bid->user->name }}
+                    <span style="font-weight:400;color:#64748b;font-size:0.95em;">${{ number_format($bid->amount, 2) }}</span>
                 </div>
-            @endforeach
-        </div>
+                <div class="admin-mobile-dashboard-list-item-meta">{{ $bid->auction->title }}</div>
+                <div class="admin-mobile-dashboard-list-item-meta">{{ $bid->created_at->diffForHumans() }}</div>
+            </div>
+        @endforeach
     </div>
-
-    <!-- Últimas pujas -->
-    <div class="mb-4">
-        <h2 class="text-lg font-semibold mb-2">Últimas pujas</h2>
-        <div class="flex flex-col gap-2">
-            @foreach($latestBids as $bid)
-                <div class="bg-white rounded-lg shadow p-3 flex flex-col">
-                    <div class="flex items-center gap-2 mb-1">
-                        <img src="{{ $bid->user->profile_photo_url }}" class="rounded-full" style="width: 28px; height: 28px; object-fit: cover;">
-                        <span class="font-semibold">{{ $bid->user->name }}</span>
-                        <span class="text-xs text-gray-400">${{ number_format($bid->amount, 2) }}</span>
-                    </div>
-                    <div class="text-xs text-gray-500 mb-1">{{ $bid->auction->title }}</div>
-                    <div class="text-xs text-gray-400">{{ $bid->created_at->diffForHumans() }}</div>
-                </div>
-            @endforeach
-        </div>
-    </div>
+    <div class="admin-mobile-dashboard-footer">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}</div>
 </div>
 @endsection

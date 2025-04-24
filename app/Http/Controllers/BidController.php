@@ -18,6 +18,12 @@ class BidController extends Controller
                 ->with('error', 'Los administradores no pueden realizar pujas.');
         }
 
+        // Impide pujar si NO tiene el rol bidder (ni aunque sea seller)
+        if (!auth()->user()->hasRole('bidder')) {
+            return redirect()->back()
+                ->with('error', 'Solo los usuarios con rol pujador pueden realizar pujas.');
+        }
+
         $request->validate([
             'amount' => 'required|numeric|min:' . ($auction->current_price + 1),
         ], [

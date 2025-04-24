@@ -42,6 +42,10 @@ class AuctionController extends Controller
 
     public function create()
     {
+        // Permitir crear subastas si tiene el rol seller o admin
+        if (!auth()->user()->hasAnyRole(['seller', 'admin'])) {
+            return redirect()->route('auctions.index')->with('error', 'No tienes permisos para crear subastas.');
+        }
         return view('auctions.create');
     }
 

@@ -8,8 +8,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WorkerStatusController;
 use Illuminate\Support\Facades\Route;
 
+// Página principal adaptativa
 Route::get('/', function () {
-    return redirect()->route('auctions.index');
+    if (
+        request()->getHost() && str_contains(request()->getHost(), 'ngrok')
+        || preg_match('/Mobile|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i', request()->header('User-Agent'))
+    ) {
+        return view('home.mobile');
+    }
+    return view('home');
 })->name('home');
 
 // Redireccionar automáticamente a la versión móvil si el acceso es por ngrok
@@ -24,6 +31,16 @@ Route::middleware(['web'])->group(function () {
         return view('auth.login');
     })->name('login');
 });
+
+// Página principal móvil dedicada
+Route::get('/mobile/home', function () {
+    return view('home.mobile');
+})->name('home.mobile');
+
+// Página principal de escritorio dedicada
+Route::get('/desktop/home', function () {
+    return view('home');
+})->name('home.desktop');
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
@@ -42,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mobile/auctions/create', [\App\Http\Controllers\Mobile\AuctionController::class, 'create'])->name('auctions.mobile.create');
     Route::post('/mobile/auctions', [\App\Http\Controllers\Mobile\AuctionController::class, 'store'])->name('auctions.mobile.store');
     Route::get('/mobile/auctions/{auction}', [\App\Http\Controllers\Mobile\AuctionController::class, 'show'])->name('auctions.mobile.show');
+    Route::delete('/mobile/auctions/{auction}', [\App\Http\Controllers\Mobile\AuctionController::class, 'destroy'])->name('auctions.mobile.destroy');
     
     // Rutas de pujas
     Route::post('/auctions/{auction}/bid', [BidController::class, 'store'])->name('auctions.bid');
@@ -60,7 +78,10 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Perfil móvil
-    Route::get('/mobile/profile', [\App\Http\Controllers\ProfileController::class, 'showMobile'])->name('profile.mobile.show');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/mobile/profile', [ProfileController::class, 'showMobile'])->name('profile.mobile.show');
+        Route::put('/mobile/profile', [ProfileController::class, 'update'])->name('profile.mobile.update');
+    });
 
     // Panel de administración
     Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {

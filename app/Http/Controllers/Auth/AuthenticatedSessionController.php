@@ -40,10 +40,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
-            return redirect()->route('auctions.mobile.index');
+            return redirect()->route('home');
         }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->route('home');
     }
 
     /**

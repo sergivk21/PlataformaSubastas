@@ -22,6 +22,10 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // Forzar vista móvil si el parámetro mobile=1 está presente
+        if (request()->query('mobile') == '1') {
+            return view('auth.mobile.register');
+        }
         if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
             return view('auth.mobile.register');
         }
@@ -39,6 +43,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:bidder,seller'],
         ]);
 
         $user = User::create([
@@ -47,8 +52,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Asignar el rol 'user' por defecto
-        $user->assignRole('user');
+        // Asignar el rol seleccionado
+        $user->assignRole($request->role);
 
         event(new Registered($user));
 

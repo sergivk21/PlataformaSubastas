@@ -2,7 +2,7 @@
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: space-between;">
         <!-- Logo y título -->
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <a href="{{ route('home') }}" style="display: flex; align-items: center;">
+            <a href="{{ route('home.desktop') }}" style="display: flex; align-items: center;">
                 <svg style="height: 1.5rem; width: 1.5rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="7" r="4"/>
@@ -50,11 +50,19 @@
                         <a href="{{ route('profile.show') }}" style="display: flex; align-items: center; padding: 0.75rem 1.5rem; color: #1e293b; text-decoration: none; gap: 0.5rem; transition: background-color 0.2s ease;">
                             <i class="fas fa-user" style="color: #2563eb;"></i> Perfil
                         </a>
+                        <a href="{{ route('auctions.index') }}" style="display: flex; align-items: center; padding: 0.75rem 1.5rem; color: #1e293b; text-decoration: none; gap: 0.5rem; transition: background-color 0.2s ease;">
+                            <i class="fas fa-trophy" style="color: #facc15;"></i> Subastas ganadas
+                        </a>
                         @if(auth()->user()->hasRole('admin'))
                         <a href="{{ route('admin.dashboard') }}" style="display: flex; align-items: center; padding: 0.75rem 1.5rem; color: #1e293b; text-decoration: none; gap: 0.5rem; transition: background-color 0.2s ease;">
                             <i class="fas fa-cog" style="color: #2563eb;"></i> Panel de Administración
                         </a>
                         @endif
+                        <a href="{{ route('auctions.mobile.index') }}"
+                           style="display: flex; align-items: center; padding: 0.75rem 1.5rem; color: #16a34a; text-decoration: none; gap: 0.5rem; border-radius: 0.5rem; transition: background-color 0.2s ease; font-weight: 600; background: none;"
+                           onmouseover="this.style.backgroundColor='#dcfce7'" onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="fas fa-mobile-alt" style="color: #16a34a;"></i> Cambiar a versión móvil
+                        </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" style="display: flex; align-items: center; padding: 0.75rem 1.5rem; color: #1e293b; text-decoration: none; gap: 0.5rem; transition: background-color 0.2s ease;">

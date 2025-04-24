@@ -18,6 +18,15 @@
             </div>
         @endif
 
+        <!-- Botón Crear Subasta para seller o admin -->
+        @auth
+            @if(auth()->user()->hasRole('seller') || auth()->user()->hasRole('admin'))
+                <a href="{{ route('auctions.mobile.create') }}" style="display:block;width:100%;margin-bottom:2rem;padding:0.9rem 0;background:linear-gradient(90deg,#2563eb 0%,#1e40af 100%);color:#fff;font-weight:700;font-size:1.08rem;border-radius:0.8rem;text-align:center;box-shadow:0 2px 8px 0 rgba(37,99,235,0.10);text-decoration:none;">
+                    <i class="fas fa-plus" style="margin-right:0.5em;"></i> Crear Subasta
+                </a>
+            @endif
+        @endauth
+
         <!-- Lista de subastas -->
         <div style="display: block; margin-top: 2rem;">
             @forelse($auctions as $auction)

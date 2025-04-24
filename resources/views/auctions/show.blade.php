@@ -142,6 +142,10 @@
                 <i class="fas fa-info-circle text-gray-500 text-2xl mb-2"></i>
                 <div class="text-gray-700 text-sm mt-1">Como administrador, no puedes realizar pujas en las subastas.<br><span style="color:#64748b;">Esta restricción se aplica para mantener la integridad del sistema.</span></div>
             </div>
+        @elseif(!auth()->user()->hasRole('bidder'))
+            <div class="auction-desktop-section" style="background:#fef2f2;border-radius:0.7em;padding:1.1em 0.7em;">
+                <div class="text-red-700 text-sm mt-1"><i class="fas fa-ban mr-2"></i>Solo los usuarios con rol <b>pujador</b> pueden realizar pujas.<br><span style="color:#b91c1c;">Cambia tu rol a pujador para poder participar en las subastas.</span></div>
+            </div>
         @else
             <div class="auction-desktop-bid-form">
                 <form action="{{ route('auctions.bid', $auction) }}" method="POST" class="flex flex-col gap-3">

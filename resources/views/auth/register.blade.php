@@ -31,6 +31,19 @@
                         style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; color: #1e293b;">
                 </div>
                 <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #1e293b; font-size: 0.875rem;">Rol</label>
+                    <div style="display: flex; flex-direction: row; gap: 1.1rem; justify-content: center; margin-top: 0.3rem;">
+                        <label style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+                            <input type="radio" name="role" value="bidder" {{ old('role') == 'bidder' ? 'checked' : '' }} style="accent-color: #22c55e; width: 1.4em; height: 1.4em; box-shadow: 0 2px 8px 0 rgba(34,197,94,0.13);">
+                            <span style="margin-top: 0.5em; font-size: 0.97em; font-weight: bold; color: #166534; background: #bbf7d0; border-radius: 999px; padding: 0.2em 1.2em;">Pujador</span>
+                        </label>
+                        <label style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+                            <input type="radio" name="role" value="seller" {{ old('role') == 'seller' ? 'checked' : '' }} style="accent-color: #64748b; width: 1.4em; height: 1.4em; box-shadow: 0 2px 8px 0 rgba(100,116,139,0.13);">
+                            <span style="margin-top: 0.5em; font-size: 0.97em; font-weight: bold; color: #334155; background: #e5e7eb; border-radius: 999px; padding: 0.2em 1.2em;">Vendedor</span>
+                        </label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
                     <label for="password" style="display: block; margin-bottom: 0.5rem; color: #1e293b; font-size: 0.875rem;">Contraseña</label>
                     <input type="password" name="password" id="password" required autocomplete="new-password"
                         style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; color: #1e293b;">

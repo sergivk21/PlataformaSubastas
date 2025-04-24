@@ -13,10 +13,13 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="/css/app.css">
+        <script src="/js/app.js" defer></script>
     </head>
     <body class="font-sans antialiased">
         @include('layouts.navigation')
+
+        <!-- Botón para cambiar de versión eliminado del layout general -->
 
         <div class="min-h-screen bg-gray-100">
             <main>

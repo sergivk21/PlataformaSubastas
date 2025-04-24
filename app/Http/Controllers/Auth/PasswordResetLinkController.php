@@ -39,10 +39,6 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
-        if (request()->getHost() && str_contains(request()->getHost(), 'ngrok')) {
-            return redirect()->route('auctions.mobile.index');
-        }
-
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))
                     : back()->withInput($request->only('email'))

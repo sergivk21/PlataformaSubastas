@@ -124,6 +124,19 @@
                 <label for="email" class="auth-mobile-label">Correo electrónico</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" class="auth-mobile-input">
             </div>
+            <div style="margin-bottom: 1.3rem;">
+                <label class="auth-mobile-label">Rol</label>
+                <div class="flex flex-row gap-4 justify-center mt-2">
+                    <label class="flex flex-col items-center cursor-pointer">
+                        <input type="radio" name="role" value="bidder" {{ old('role') == 'bidder' ? 'checked' : '' }} class="accent-blue-500 w-7 h-7 shadow-md">
+                        <span class="mt-2 text-sm font-bold text-blue-700 bg-blue-100 rounded-full px-4 py-1">Pujador</span>
+                    </label>
+                    <label class="flex flex-col items-center cursor-pointer">
+                        <input type="radio" name="role" value="seller" {{ old('role') == 'seller' ? 'checked' : '' }} class="accent-gray-500 w-7 h-7 shadow-md">
+                        <span class="mt-2 text-sm font-bold text-gray-600 bg-gray-100 rounded-full px-4 py-1">Vendedor</span>
+                    </label>
+                </div>
+            </div>
             <div style="width:100%;box-sizing:border-box;">
                 <label for="password" class="auth-mobile-label">Contraseña</label>
                 <input id="password" type="password" name="password" required autocomplete="new-password" class="auth-mobile-input">

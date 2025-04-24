@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_photo',
+        'role_changed',
     ];
 
     /**
@@ -61,5 +62,13 @@ class User extends Authenticatable
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
+    }
+
+    /**
+     * Override to send password reset notification in Spanish
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 }

@@ -10,12 +10,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Estilos CSS/JS Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Estilos CSS y JS rutas relativas universales -->
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/app.js" defer></script>
 </head>
 <body class="antialiased">
     <div class="min-h-screen flex flex-col">
@@ -33,6 +32,7 @@
             <p class="text-center text-gray-600">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script src="{{ asset('js/mobile-menu.js') }}" defer></script>
+    <script src="/js/mobile-menu.js" defer></script>
+    @yield('scripts')
 </body>
 </html>
