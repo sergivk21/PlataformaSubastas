@@ -5,7 +5,7 @@
         <!-- Logo y título CENTRADOS, enlace a home móvil dedicada -->
         <a href="{{ route('home.mobile') }}" style="display: flex; flex-direction: row; align-items: center; gap: 0.6rem; text-decoration: none; margin: 0 auto;">
             <span style="font-weight: 900; font-size: 2.45rem; letter-spacing: -2px; font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; text-transform: uppercase; background: linear-gradient(90deg,#1e40af 0%, #2563eb 30%, #38bdf8 70%, #0ea5e9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; text-shadow: 0 2px 14px rgba(37,99,235,0.19); filter: none;">
-                Subastas <span style="font-weight: 900; background: linear-gradient(90deg,#0ea5e9 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">PRO</span>
+                Subastas <span style="font-weight: 900; background: linear-gradient(90deg,#0ea5e9 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">COELHO</span>
             </span>
         </a>
         <!-- Botón menú hamburguesa a la DERECHA -->
@@ -27,12 +27,12 @@
                 <a href="{{ route('profile.mobile.show') }}" class="mobile-menu-btn">
                     <i class="fas fa-user"></i> Perfil
                 </a>
-                <a href="{{ route('auctions.mobile.index') }}" class="mobile-menu-btn mobile-menu-btn-won">
-                    <i class="fas fa-trophy"></i> Subastas ganadas
-                </a>
                 @if(auth()->user()->hasRole('admin'))
                     <a href="{{ route('admin.mobile.dashboard') }}" class="mobile-menu-btn">
                         <i class="fas fa-cogs"></i> Panel Administración
+                    </a>
+                    <a href="{{ route('auctions.mobile.index') }}" class="mobile-menu-btn mobile-menu-btn-won">
+                        <i class="fas fa-trophy"></i> Subastas ganadas
                     </a>
                 @endif
             @endauth
